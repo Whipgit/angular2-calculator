@@ -1,0 +1,54 @@
+<div class="container-fluid">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <h1 class="page-header">Dashboard</h1>
+      <ol class="breadcrumb">
+        <li class="active">
+          <i class="fa fa-dashboard"></i> {{versionString}}
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3">
+      <div>
+        <h4>Select Account</h4>
+        <div>
+          <rd-selector [data]="accounts" (accountSelectorValue)="filterAccounts($event)" style=""></rd-selector>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div>
+      <h4>Select GPU Brand</h4>
+    </div>
+      <rd-filter [filter]="gpuBrands" (accountSelectorValue)="filterBrands($event)"></rd-filter>
+    </div>
+  </div>
+  <hr>
+
+  <div class="row">
+    <rd-stat-card [data]="userCard"></rd-stat-card>
+    <rd-stat-card [data]="sessionCard"></rd-stat-card>
+    <rd-stat-card [data]="brandCard"></rd-stat-card>
+    <rd-stat-card [data]="modelCard"></rd-stat-card>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <rd-line-chart [data]="chartData"></rd-line-chart>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <rd-pie-chart [data]="chartData" [detail]="chartSet[0]"></rd-pie-chart>
+    </div>
+    <div class="col-lg-6">
+      <rd-pie-chart [data]="chartData" [detail]="chartSet[1]"></rd-pie-chart>
+    </div>
+  </div>
+
+</div>

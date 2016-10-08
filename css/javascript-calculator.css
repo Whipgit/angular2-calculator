@@ -1,0 +1,147 @@
+.hero {
+  height: 100vh;
+  background-image: -webkit-radial-gradient(circle farthest-corner at 48% 28%, hsla(0, 0%, 91%, .82), #090909), url('../images/pexels-photo-167682.png');
+  background-image: radial-gradient(circle farthest-corner at 48% 28%, hsla(0, 0%, 91%, .82), #090909), url('../images/pexels-photo-167682.png');
+  background-position: 0px 0px, 50% 50%;
+  background-size: auto, cover;
+  background-attachment: scroll, fixed;
+}
+
+.calculator-container {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 112px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.calc-background-field {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 282px;
+  height: 324px;
+  padding: 12px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-align: stretch;
+  -webkit-align-items: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  -webkit-align-content: flex-start;
+  -ms-flex-line-pack: start;
+  align-content: flex-start;
+  border-radius: 5px;
+  background-image: -webkit-linear-gradient(270deg, #edecea, #ecebe9 19%, #ecebe9 53%, #d4d3d1 97%, #c1c0be);
+  background-image: linear-gradient(180deg, #edecea, #ecebe9 19%, #ecebe9 53%, #d4d3d1 97%, #c1c0be);
+  box-shadow: 0 2px 11px 0 rgba(0, 0, 0, .44);
+}
+
+.calcelement {
+  margin: 3px;
+  padding: 10px;
+  -webkit-align-self: flex-start;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently
+                                  not supported by any browser */
+  cursor: default;
+}
+
+.calcelement._25 {
+  -webkit-flex-basis: 21%;
+  -ms-flex-preferred-size: 21%;
+  flex-basis: 21%;
+}
+
+.calcelement._25.button {
+  border: 1px solid #cfcfcf;
+  border-radius: 5px;
+  background-image: -webkit-linear-gradient(270deg, #fdfdfd 1%, #f1f1f1 11%, #f1f1f1 83%, #e4e4e4);
+  background-image: linear-gradient(180deg, #fdfdfd 1%, #f1f1f1 11%, #f1f1f1 83%, #e4e4e4);
+  font-family: Montserrat, sans-serif;
+  font-weight: 400;
+}
+
+.calcelement._25.button:hover {
+  background-image: -webkit-linear-gradient(270deg, #e9e6e6 1%, #dfdfdf 11%, #f1f1f1 83%, #e4e4e4);
+  background-image: linear-gradient(180deg, #e9e6e6 1%, #dfdfdf 11%, #f1f1f1 83%, #e4e4e4);
+}
+
+.calcelement._25.button:active {
+  background-image: -webkit-linear-gradient(270deg, #f8f8f8 1%, #ebebeb 11%, #f1f1f1 83%, #e7e7e7);
+  background-image: linear-gradient(180deg, #f8f8f8 1%, #ebebeb 11%, #f1f1f1 83%, #e7e7e7);
+  box-shadow: inset 1px 1px 6px -2px #000;
+}
+
+.calcelement._25.button.bold {
+  font-weight: 700;
+}
+
+.calcelement._25.button.dark {
+  background-image: -webkit-linear-gradient(270deg, #d5d5d5 1%, #b9b9b9 7%, #cacaca 83%, #b6b6b6);
+  background-image: linear-gradient(180deg, #d5d5d5 1%, #b9b9b9 7%, #cacaca 83%, #b6b6b6);
+}
+
+.calcelement._50 {
+  -webkit-flex-basis: 46%;
+  -ms-flex-preferred-size: 46%;
+  flex-basis: 46%;
+}
+
+.calcelement._50.button {
+  border: 1px solid #cfcfcf;
+  border-radius: 5px;
+}
+
+.calcelement._100 {
+  margin: 0px 0px 3px;
+  padding: 3px;
+  -webkit-flex-basis: 100%;
+  -ms-flex-preferred-size: 100%;
+  flex-basis: 100%;
+}
+
+.text-field {
+  height: 51px;
+  margin-bottom: 0px;
+  border: 1px solid #161616;
+  background-image: -webkit-linear-gradient(270deg, #424242, #424242);
+  background-image: linear-gradient(180deg, #424242, #424242);
+  font-family: Montserrat, sans-serif;
+  color: #f1f1f1;
+  font-size: 21px;
+  text-align: right;
+}
+
+.text-field-wrapper {
+  margin-bottom: 0px;
+}
+
+form {
+    margin-bottom: 0em;
+}
+
+input[readonly] {
+     cursor: pointer !important;
+}
