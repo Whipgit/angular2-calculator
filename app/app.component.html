@@ -1,47 +1,25 @@
 <div class="hero">
-  <div class="calculator-container w-container">
-    <div class="calc-background-field">
-      <div class="_100 calcelement">
-        <div class="text-field-wrapper w-form">
-          <form data-name="calculator io" id="wf-form-calculator-io" name="wf-form-calculator-io">
-            <input
-              class="text-field w-input"
-              data-name="lcd"
-              id="lcd"
-              maxlength="256" 
-              name="lcd" 
-              placeholder="0" 
-              type="text"
-              pattern="[0-9-+*/.()]"
-              [(ngModel)]="lcdValue"
-              [style.background-color]="lcdBackGroundColor"
-              readonly>
-          </form>
-        </div>
+  <div class="w-container">
+    <div class="w-row">
+      <div class="w-col w-col-7">
+        <h1 class="logo-text">JS Calculator</h1>
+        <p class="subtitle">This calculator does not use eval(). 
+          It converts the mathematical expression to the 
+          <a href="https://en.wikipedia.org/wiki/Reverse_Polish_notation">Reverse Polish Notation</a>
+          using the 
+          <a href="https://en.wikipedia.org/wiki/Shunting-yard_algorithm">Shunting-yard algorithm</a> 
+          and evaluates it manually.</p>
       </div>
-      <div (click)="calcButtonPress('(')" class="_25 button calcelement">(</div>
-      <div (click)="calcButtonPress(')')" class="_25 button calcelement">)</div>
-      <div 
-        (click)="clearButtonPress('')" 
-        class="_25 _50 button calcelement">
-          {{clearValue}}
+      <div class="calculator-column w-col w-col-5">
+        <js-calculator></js-calculator>
       </div>
-      <div (click)="calcButtonPress('7')" class="_25 bold button calcelement">7</div>
-      <div (click)="calcButtonPress('8')" class="_25 bold button calcelement">8</div>
-      <div (click)="calcButtonPress('9')" class="_25 bold button calcelement">9</div>
-      <div (click)="calcButtonPress('/')" class="_25 button calcelement">÷</div>
-      <div (click)="calcButtonPress('4')" class="_25 bold button calcelement">4</div>
-      <div (click)="calcButtonPress('5')" class="_25 bold button calcelement">5</div>
-      <div (click)="calcButtonPress('6')" class="_25 bold button calcelement">6</div>
-      <div (click)="calcButtonPress('x')" class="_25 button calcelement">x</div>
-      <div (click)="calcButtonPress('1')" class="_25 bold button calcelement">1</div>
-      <div (click)="calcButtonPress('2')" class="_25 bold button calcelement">2</div>
-      <div (click)="calcButtonPress('3')" class="_25 bold button calcelement">3</div>
-      <div (click)="calcButtonPress('-')" class="_25 button calcelement">-</div>
-      <div (click)="calcButtonPress('0')" class="_25 bold button calcelement">0</div>
-      <div (click)="calcButtonPress('.')" class="_25 button calcelement">.</div>
-      <div (click)="evaluate()" class="_25 button calcelement">=</div>
-      <div (click)="calcButtonPress('+')" class="_25 button calcelement">+</div>
+    </div>
+    <div class="links">
+      <a href="http://www.stijnwinand.com"><img class="powered" src="images/Untitled-1.png" title="stijnwinand.com"></a>
+      <a href="https://github.com/Whipgit/angular2-calculator"><img class="powered" src="images/github.png" title="Find this code on github"></a>
+      <a href="https://angular.io"><img class="powered" src="images/8448280c4dbe5e70-32x32.png" title="Powered by Angular2"></a>
+      <a href="https://www.typescriptlang.org/"><img class="powered" src="images/32X32_TSlogo.png" title="TypeScript"></a>
+      <a href="https://www.javascript.com/"><img class="powered" src="images/js-32x32.png" title="JavaScript"></a>
     </div>
   </div>
 </div>

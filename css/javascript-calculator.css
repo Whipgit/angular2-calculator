@@ -5,6 +5,7 @@
   background-position: 0px 0px, 50% 50%;
   background-size: auto, cover;
   background-attachment: scroll, fixed;
+  padding-top: 112px;
 }
 
 .calculator-container {
@@ -12,7 +13,6 @@
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-top: 112px;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -26,7 +26,6 @@
   display: -ms-flexbox;
   display: flex;
   width: 282px;
-  height: 324px;
   padding: 12px;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -72,6 +71,15 @@
   -webkit-flex-basis: 21%;
   -ms-flex-preferred-size: 21%;
   flex-basis: 21%;
+}
+
+.formula {
+    padding-right: 4px;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    text-align: right;
 }
 
 .calcelement._25.button {
@@ -143,4 +151,105 @@ form {
 
 input[readonly] {
      cursor: pointer !important;
+}
+
+p {
+  margin-top: 0px;
+  margin-bottom: 5px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  line-height: 23px;
+  font-weight: 300;
+  letter-spacing: 0px;
+  text-shadow: none;
+  color: black;
+}
+
+.subtitle {
+  margin-bottom: 41px;
+  font-size: 20px;
+  line-height: 28px;
+  text-shadow: none;
+}
+
+.share-text {
+  margin-bottom: 12px;
+  color: #000;
+  text-shadow: 0 1px 0 transparent;
+}
+
+.social-widget {
+  width: 104px;
+  float: left;
+  opacity: 0.81;
+  -webkit-transition: opacity 300ms ease;
+  transition: opacity 300ms ease;
+}
+
+.social-widget:hover {
+  opacity: 1;
+}
+
+.social-widget-wrapper {
+  margin-bottom: 17px;
+}
+
+.logo-text {
+  margin-bottom: 33px;
+  font-family: 'Lily Script One', sans-serif;
+  font-size: 69px;
+  line-height: 55px;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0px;
+}
+
+.calculator-column {
+  text-align: center;
+}
+
+.powered {
+  margin: 8px;
+}
+
+a {
+  color: #000;
+}
+
+.swiqlogo {
+  margin-bottom: 5px;
+}
+
+@media (max-width: 767px) {
+  .subtitle {
+    text-shadow: none;
+  }
+  .share-text {
+    color: rgba(241, 235, 247, .93);
+  }
+  .social-widget-wrapper {
+    width: 202px;
+    margin-right: auto;
+    margin-bottom: 44px;
+    margin-left: auto;
+  }
+  .links {
+    margin-top: 40px;
+  }
+}
+
+@media (max-width: 479px) {
+  .subtitle {
+    text-shadow: none;
+  }
+  .social-widget {
+    width: 96px;
+  }
+  .social-widget-wrapper {
+    display: block;
+    width: 194px;
+    margin-right: auto;
+    margin-bottom: 21px;
+    margin-left: auto;
+  }
 }
