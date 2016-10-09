@@ -14,14 +14,19 @@ var AppComponent = (function () {
     function AppComponent() {
         this.lcdValue = '';
         this.lcdValueExpression = false;
-        this.cancelOrClearValue = 'AC';
-        this.pattern = new RegExp("[0-9-+*/.()]");
+        this.clearValue = 'AC';
+        this.completePattern = new RegExp("[0-9-+*/.()]");
+        this.lcdBackGroundColor = '#424242';
+        this.parenthesisFlag = 0;
     }
+    // Handles all calculator buttons except "=" and "AC"
     AppComponent.prototype.calcButtonPress = function (inputValue) {
-        if (!this.lcdValue || this.isNextValueAllowed(inputValue)) {
+        if (this.validateInput(inputValue)) {
             this.lcdValue += inputValue;
-            this.lcdValueExpression = true;
-            this.flipACButton();
+            this.flipACButton(true);
+        }
+        else {
+            this.flashLCD();
         }
     };
     // Only handle keyboard input we want to use.
@@ -80,9 +85,6 @@ var AppComponent = (function () {
             case '.':
                 this.calcButtonPress(key);
                 break;
-            case 'Backspace':
-                this.cancelOrClearButtonPress;
-                break;
             case '=':
                 this.evaluate();
                 break;
@@ -91,40 +93,220 @@ var AppComponent = (function () {
                 break;
         }
     };
-    // If the LCD contains an expression -> clear the last entry
-    // If the LCD contains a result -> clear the entire result
-    AppComponent.prototype.cancelOrClearButtonPress = function () {
+    // Return true if the next input matches something that makes sense
+    AppComponent.prototype.validateInput = function (input) {
+        var lastValue = this.lcdValue.substr(this.lcdValue.length - 1, 1);
+        this.editParenthesisFlag(input, true);
+        if (!lastValue || '(/*.'.indexOf(lastValue) > -1) {
+            if (')x/'.indexOf(input) > -1)
+                return false;
+        }
+        return true;
+    };
+    // For every open parenthesis, we must have a closed parenthesis
+    // We use this for input validation before we evaluate
+    AppComponent.prototype.editParenthesisFlag = function (input, add) {
+        if (add) {
+            if ('('.indexOf(input) > -1)
+                this.parenthesisFlag += 1;
+            if (')'.indexOf(input) > -1)
+                this.parenthesisFlag -= 1;
+        }
+        else {
+            if ('('.indexOf(input) > -1)
+                this.parenthesisFlag -= 1;
+            if (')'.indexOf(input) > -1)
+                this.parenthesisFlag += 1;
+        }
+    };
+    // In case of anticipated input error: flash the lcd red
+    AppComponent.prototype.flashLCD = function () {
+        var _this = this;
+        var currentLCDValue = this.lcdValue;
+        this.lcdValue = 'Input Error';
+        this.lcdBackGroundColor = '#a02626';
+        setTimeout(function () {
+            _this.lcdBackGroundColor = '#424242';
+            _this.lcdValue = currentLCDValue;
+        }, 500);
+    };
+    // If the LCD contains an expression -> clear the last entry (backspace)
+    // If the LCD contains a result -> clear the entire value
+    AppComponent.prototype.clearButtonPress = function () {
         if (this.lcdValueExpression) {
+            var valueToRemove = this.lcdValue.substring(this.lcdValue.length, this.lcdValue.length - 1);
+            if ('()'.indexOf(valueToRemove) > -1) {
+                this.editParenthesisFlag(valueToRemove, false);
+            }
             this.lcdValue = this.lcdValue.slice(0, -1);
             if (!this.lcdValue) {
-                this.lcdValueExpression = false;
-                this.flipACButton();
+                this.flipACButton(false);
             }
             else {
-                this.lcdValueExpression = true;
-                this.flipACButton();
+                this.flipACButton(true);
             }
         }
         else {
             this.lcdValue = '';
-            this.lcdValueExpression = false;
-            this.flipACButton();
+            this.parenthesisFlag = 0;
+            this.flipACButton(false);
         }
     };
-    AppComponent.prototype.flipACButton = function () {
-        this.cancelOrClearValue = (this.lcdValueExpression) ? 'CE' : 'AC';
+    // Change the string value for the CE button
+    // CE = Clear Entry (backspace)
+    // AC = All Clear (remove entire value)
+    AppComponent.prototype.flipACButton = function (input) {
+        this.lcdValueExpression = input;
+        this.clearValue = (this.lcdValueExpression) ? 'CE' : 'AC';
     };
-    AppComponent.prototype.isNextValueAllowed = function (input) {
-        var lastCharacter = this.lcdValue.slice(-1);
-        return true;
+    // Helperfunction used by standardizeString()
+    AppComponent.prototype.replaceBy = function (target, find, replace) {
+        return target
+            .split(find)
+            .join(replace);
+    };
+    // To round results such as:
+    // 0.1 + 0.2 = 0.300000000000004 -> 0.3
+    // 0.1 * 0.2 = 0.020000000000000004 -> 0.02
+    AppComponent.prototype.roundValue = function (input) {
+        var dotLocation = input.toString().indexOf('.');
+        var flagDigit = false;
+        if (dotLocation > -1 && input.length > 15) {
+            var afterDotString = input.substring(dotLocation, input.length);
+            for (var i = 0; i < afterDotString.length; i++) {
+                if (parseInt(afterDotString[i]) > 0)
+                    flagDigit = true;
+                if (afterDotString[i] === '0' && flagDigit) {
+                    return input.substring(0, dotLocation + i);
+                }
+            }
+        }
+        return input;
     };
     AppComponent.prototype.evaluate = function () {
-        // Evaluate the LCD value with the RegEx Pattern
-        if (this.pattern.test(this.lcdValue)) {
+        var valueToEvaluate = this.lcdValue;
+        var polishNotation = '';
+        var solution = '';
+        if (this.completePattern.test(valueToEvaluate) && !this.parenthesisFlag) {
+            polishNotation = this.convertToPolishNotation(valueToEvaluate);
+            solution = this.solvePolishNotation(polishNotation);
+            this.lcdValue = this.roundValue(solution);
         }
         else {
             this.lcdValue = "Error";
+            this.parenthesisFlag = 0;
         }
+        this.flipACButton(false);
+    };
+    AppComponent.prototype.convertToPolishNotation = function (input) {
+        var output = "";
+        var operatorStack = [];
+        var operators = {
+            "/": { weight: 3 },
+            "*": { weight: 3 },
+            "+": { weight: 2 },
+            "-": { weight: 2 }
+        };
+        input = this.standardizeString(input);
+        input = input.replace(/\s+/g, '');
+        input = input.split(/([\+\-\*\/\^\(\)])/);
+        input = this.cleanArray(input);
+        for (var i = 0; i < input.length; i++) {
+            var token = input[i];
+            if ('(/*'.indexOf(operatorStack[operatorStack.length - 1]) > -1 && token === '-') {
+                token += input[i + 1];
+                i += 1;
+            }
+            if (this.isNumeric(token)) {
+                output += token + ' ';
+            }
+            else if ('*/+-'.indexOf(token) !== -1) {
+                var r1 = token;
+                var r2 = operatorStack[operatorStack.length - 1];
+                while ('*/+-'.indexOf(r2) !== -1 && operators[r1].weight <= operators[r2].weight) {
+                    output += operatorStack.pop() + ' ';
+                    r2 = operatorStack[operatorStack.length - 1];
+                }
+                operatorStack.push(r1);
+            }
+            else if (token === '(') {
+                operatorStack.push(token);
+            }
+            else if (token === ')') {
+                while (operatorStack[operatorStack.length - 1] !== '(') {
+                    output += operatorStack.pop() + ' ';
+                }
+                operatorStack.pop();
+            }
+        }
+        while (operatorStack.length > 0) {
+            output += operatorStack.pop() + ' ';
+        }
+        return output;
+    };
+    AppComponent.prototype.solvePolishNotation = function (polish) {
+        var results = [];
+        polish = polish.split(" ");
+        polish = this.cleanArray(polish);
+        for (var i = 0; i < polish.length; i++) {
+            if (this.isNumeric(polish[i])) {
+                results.push(polish[i]);
+            }
+            else {
+                var a = results.pop();
+                var b = results.pop();
+                if (polish[i] === '+') {
+                    results.push(parseFloat(a) + parseFloat(b));
+                }
+                else if (polish[i] === '-') {
+                    results.push(parseFloat(b) - parseFloat(a));
+                }
+                else if (polish[i] === '*') {
+                    results.push(parseFloat(a) * parseFloat(b));
+                }
+                else if (polish[i] === '/') {
+                    results.push(parseFloat(b) / parseFloat(a));
+                }
+            }
+        }
+        if (results.length > 1) {
+            return 'Error';
+        }
+        else {
+            return results
+                .pop()
+                .toString();
+        }
+    };
+    // We turn the string into something our convertToPolishNotation() can read
+    AppComponent.prototype.standardizeString = function (input) {
+        while (input.charAt(0) === '+')
+            input = input.substr(1);
+        input = this.replaceBy(input, ' ', '');
+        input = this.replaceBy(input, 'x', '*');
+        input = this.replaceBy(input, '-(', '-1*(');
+        input = this.replaceBy(input, ')(', ')*(');
+        input = this.replaceBy(input, '--', '+');
+        input = this.replaceBy(input, '+-', '-');
+        input = this.replaceBy(input, '-+', '-');
+        input = this.replaceBy(input, '++', '+');
+        input = this.replaceBy(input, '(+', '(');
+        for (var i = 0; i < 10; i++) {
+            input = this.replaceBy(input, i + "(", i + "*(");
+        }
+        return input;
+    };
+    // Remove empty values from Array
+    AppComponent.prototype.cleanArray = function (input) {
+        for (var i = 0; i < input.length; i++) {
+            if (input[i] === '')
+                input.splice(i, 1);
+        }
+        return input;
+    };
+    // Return true if input is numeric
+    AppComponent.prototype.isNumeric = function (input) {
+        return !isNaN(parseFloat(input));
     };
     AppComponent = __decorate([
         core_1.Component({

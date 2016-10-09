@@ -14,13 +14,18 @@
               type="text"
               pattern="[0-9-+*/.()]"
               [(ngModel)]="lcdValue"
+              [style.background-color]="lcdBackGroundColor"
               readonly>
           </form>
         </div>
       </div>
       <div (click)="calcButtonPress('(')" class="_25 button calcelement">(</div>
       <div (click)="calcButtonPress(')')" class="_25 button calcelement">)</div>
-      <div (click)="cancelOrClearButtonPress('')" class="_25 _50 button calcelement">{{cancelOrClearValue}}</div>
+      <div 
+        (click)="clearButtonPress('')" 
+        class="_25 _50 button calcelement">
+          {{clearValue}}
+      </div>
       <div (click)="calcButtonPress('7')" class="_25 bold button calcelement">7</div>
       <div (click)="calcButtonPress('8')" class="_25 bold button calcelement">8</div>
       <div (click)="calcButtonPress('9')" class="_25 bold button calcelement">9</div>
@@ -33,7 +38,7 @@
       <div (click)="calcButtonPress('2')" class="_25 bold button calcelement">2</div>
       <div (click)="calcButtonPress('3')" class="_25 bold button calcelement">3</div>
       <div (click)="calcButtonPress('-')" class="_25 button calcelement">-</div>
-      <div (click)="calcButtonPress('0')" class="_25 button calcelement">0</div>
+      <div (click)="calcButtonPress('0')" class="_25 bold button calcelement">0</div>
       <div (click)="calcButtonPress('.')" class="_25 button calcelement">.</div>
       <div (click)="evaluate()" class="_25 button calcelement">=</div>
       <div (click)="calcButtonPress('+')" class="_25 button calcelement">+</div>

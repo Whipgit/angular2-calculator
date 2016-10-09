@@ -126,8 +126,7 @@
   height: 51px;
   margin-bottom: 0px;
   border: 1px solid #161616;
-  background-image: -webkit-linear-gradient(270deg, #424242, #424242);
-  background-image: linear-gradient(180deg, #424242, #424242);
+  background-color: #424242;
   font-family: Montserrat, sans-serif;
   color: #f1f1f1;
   font-size: 21px;
