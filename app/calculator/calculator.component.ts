@@ -17,14 +17,19 @@ export class CalculatorComponent {
     completePattern = new RegExp("[0-9-+*/.()]");
     lcdBackGroundColor: string = '#424242';
     parenthesisFlag: number = 0;
-    expression: string = '';
+    expression: string = '=';
 
     constructor() { }
 
     // Handles all calculator buttons except "=" and "AC"
     calcButtonPress(inputValue: string) {
+        debugger;
         if (this.validateInput(inputValue)) {
-            this.lcdValue += inputValue;
+            if('/*-+'.indexOf(inputValue) === -1 && !this.lcdValueExpression) {
+                this.lcdValue = inputValue;
+            } else {
+                this.lcdValue += inputValue;
+            }            
             this.flipACButton(true);
         } else {
             this.flashLCD();
@@ -100,14 +105,11 @@ export class CalculatorComponent {
                 this.editParenthesisFlag(valueToRemove, false);
             }
             this.lcdValue = this.lcdValue.slice(0, -1);
-            if (!this.lcdValue) {
-                this.flipACButton(false);
-            } else {
-                this.flipACButton(true);
-            }
+            if (!this.lcdValue) this.flipACButton(false);
+            else this.flipACButton(true);
         } else {
             this.lcdValue = '';
-            this.expression = '';
+            this.expression = '=';
             this.parenthesisFlag = 0;
             this.flipACButton(false);
         }

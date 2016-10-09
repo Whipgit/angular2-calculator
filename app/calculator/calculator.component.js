@@ -17,12 +17,18 @@ var CalculatorComponent = (function () {
         this.completePattern = new RegExp("[0-9-+*/.()]");
         this.lcdBackGroundColor = '#424242';
         this.parenthesisFlag = 0;
-        this.expression = '';
+        this.expression = '=';
     }
     // Handles all calculator buttons except "=" and "AC"
     CalculatorComponent.prototype.calcButtonPress = function (inputValue) {
+        debugger;
         if (this.validateInput(inputValue)) {
-            this.lcdValue += inputValue;
+            if ('/*-+'.indexOf(inputValue) === -1 && !this.lcdValueExpression) {
+                this.lcdValue = inputValue;
+            }
+            else {
+                this.lcdValue += inputValue;
+            }
             this.flipACButton(true);
         }
         else {
@@ -139,16 +145,14 @@ var CalculatorComponent = (function () {
                 this.editParenthesisFlag(valueToRemove, false);
             }
             this.lcdValue = this.lcdValue.slice(0, -1);
-            if (!this.lcdValue) {
+            if (!this.lcdValue)
                 this.flipACButton(false);
-            }
-            else {
+            else
                 this.flipACButton(true);
-            }
         }
         else {
             this.lcdValue = '';
-            this.expression = '';
+            this.expression = '=';
             this.parenthesisFlag = 0;
             this.flipACButton(false);
         }
