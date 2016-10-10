@@ -33,6 +33,7 @@ var CalculatorComponent = (function () {
             }
             else if (inputValue === '=') {
                 this.evaluate();
+                return;
             }
             this.flipACButton(true);
         }
@@ -82,7 +83,7 @@ var CalculatorComponent = (function () {
                 this.calcButtonPress(key);
                 break;
             case '*':
-                this.calcButtonPress('x');
+                this.calcButtonPress(key);
                 break;
             case '/':
                 this.calcButtonPress(key);

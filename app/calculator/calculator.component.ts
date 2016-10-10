@@ -32,6 +32,7 @@ export class CalculatorComponent {
                 this.lcdValue += inputValue;
             } else if(inputValue === '=') {
                 this.evaluate();
+                return;
             }            
             this.flipACButton(true);
         } else {
@@ -56,7 +57,7 @@ export class CalculatorComponent {
             case '9': this.calcButtonPress(key); break;
             case '+': this.calcButtonPress(key); break;
             case '-': this.calcButtonPress(key); break;
-            case '*': this.calcButtonPress('x'); break;
+            case '*': this.calcButtonPress(key); break;
             case '/': this.calcButtonPress(key); break;
             case '(': this.calcButtonPress(key); break;
             case ')': this.calcButtonPress(key); break;
