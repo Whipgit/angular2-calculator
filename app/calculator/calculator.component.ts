@@ -23,7 +23,6 @@ export class CalculatorComponent {
 
     // Handles all calculator buttons except "=" and "AC"
     calcButtonPress(inputValue: string) {
-        debugger;
         if (this.validateInput(inputValue)) {
             if('/*-+'.indexOf(inputValue) === -1 && !this.lcdValueExpression) {
                 this.lcdValue = inputValue;
