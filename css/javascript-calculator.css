@@ -225,8 +225,15 @@ a {
 }
 
 @media (max-width: 767px) {
+  .hero {
+    padding-top: 50px;
+  }
   .subtitle {
     text-shadow: none;
+    text-align: center;
+  }
+  h1 {
+    text-align: center;
   }
   .share-text {
     color: rgba(241, 235, 247, .93);
@@ -239,6 +246,7 @@ a {
   }
   .links {
     margin-top: 40px;
+    text-align: center;
   }
 }
 
