@@ -15,19 +15,24 @@ var CalculatorComponent = (function () {
         this.lcdValueExpression = false;
         this.clearValue = 'AC';
         this.completePattern = new RegExp("[0-9-+*/.()]");
+        this.numbersPattern = new RegExp('^[0-9]+$');
         this.lcdBackGroundColor = '#424242';
         this.parenthesisFlag = 0;
         this.expression = '=';
     }
-    // Handles all calculator buttons except "=" and "AC"
+    // Handles all calculator buttons except "AC".
     CalculatorComponent.prototype.calcButtonPress = function (inputValue) {
-        debugger;
+        if (this.lcdValue === 'Error' || this.lcdValue === 'NaN')
+            this.lcdValue = '';
         if (this.validateInput(inputValue)) {
             if ('/*-+'.indexOf(inputValue) === -1 && !this.lcdValueExpression) {
                 this.lcdValue = inputValue;
             }
-            else {
+            else if (this.completePattern.test(inputValue)) {
                 this.lcdValue += inputValue;
+            }
+            else if (inputValue === '=') {
+                this.evaluate();
             }
             this.flipACButton(true);
         }
@@ -92,10 +97,10 @@ var CalculatorComponent = (function () {
                 this.calcButtonPress(key);
                 break;
             case '=':
-                this.evaluate();
+                this.calcButtonPress(key);
                 break;
             case 'Enter':
-                this.evaluate();
+                this.calcButtonPress('=');
                 break;
         }
     };
@@ -103,9 +108,21 @@ var CalculatorComponent = (function () {
     CalculatorComponent.prototype.validateInput = function (input) {
         var lastValue = this.lcdValue.substr(this.lcdValue.length - 1, 1);
         this.editParenthesisFlag(input, true);
-        if (!lastValue || '(/*.'.indexOf(lastValue) > -1) {
-            if (')x/'.indexOf(input) > -1)
+        if (!lastValue || '(/*+.'.indexOf(lastValue) > -1) {
+            if (')*/'.indexOf(input) > -1) {
+                this.editParenthesisFlag(input, false);
                 return false;
+            }
+            if (lastValue === '.' && ')(-+'.indexOf(input) > -1) {
+                this.editParenthesisFlag(input, false);
+                return false;
+            }
+        }
+        if (this.numbersPattern.test(lastValue) && this.parenthesisFlag) {
+            if (')'.indexOf(input) > -1) {
+                this.editParenthesisFlag(input, false);
+                return false;
+            }
         }
         return true;
     };

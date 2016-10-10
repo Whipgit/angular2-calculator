@@ -15,19 +15,23 @@ export class CalculatorComponent {
     lcdValueExpression: boolean = false;
     clearValue: string = 'AC'
     completePattern = new RegExp("[0-9-+*/.()]");
+    numbersPattern = new RegExp('^[0-9]+$');
     lcdBackGroundColor: string = '#424242';
     parenthesisFlag: number = 0;
     expression: string = '=';
 
     constructor() { }
 
-    // Handles all calculator buttons except "=" and "AC"
+    // Handles all calculator buttons except "AC".
     calcButtonPress(inputValue: string) {
+        if (this.lcdValue === 'Error' || this.lcdValue === 'NaN') this.lcdValue = '';
         if (this.validateInput(inputValue)) {
             if('/*-+'.indexOf(inputValue) === -1 && !this.lcdValueExpression) {
                 this.lcdValue = inputValue;
-            } else {
+            } else if(this.completePattern.test(inputValue)) {
                 this.lcdValue += inputValue;
+            } else if(inputValue === '=') {
+                this.evaluate();
             }            
             this.flipACButton(true);
         } else {
@@ -57,8 +61,8 @@ export class CalculatorComponent {
             case '(': this.calcButtonPress(key); break;
             case ')': this.calcButtonPress(key); break;
             case '.': this.calcButtonPress(key); break;
-            case '=': this.evaluate(); break;
-            case 'Enter': this.evaluate(); break;
+            case '=': this.calcButtonPress(key); break;
+            case 'Enter': this.calcButtonPress('='); break;
         }
     }
 
@@ -66,8 +70,21 @@ export class CalculatorComponent {
     validateInput(input) {
         let lastValue = this.lcdValue.substr(this.lcdValue.length - 1, 1);
         this.editParenthesisFlag(input, true);
-        if (!lastValue || '(/*.'.indexOf(lastValue) > -1) {
-            if (')x/'.indexOf(input) > -1) return false;
+        if (!lastValue || '(/*+.'.indexOf(lastValue) > -1) {
+            if (')*/'.indexOf(input) > -1) {
+                this.editParenthesisFlag(input, false);
+                return false;
+            }
+            if (lastValue === '.' && ')(-+'.indexOf(input) > -1) {
+                this.editParenthesisFlag(input, false);
+                return false;
+            }
+        }
+        if (this.numbersPattern.test(lastValue) && this.parenthesisFlag) {
+            if (')'.indexOf(input) > -1) {
+                this.editParenthesisFlag(input, false);
+                return false;
+            }
         }
         return true;
     }
@@ -142,7 +159,7 @@ export class CalculatorComponent {
             for (let i = 0; i < afterDotString.length; i++) {
                 if (parseInt(afterDotString[i]) > 0) flagDigit = true;
                 if (afterDotString[i] === '0' && flagDigit) {
-                    return input.substring(0,dotLocation + i);
+                    return input.substring(0, dotLocation + i);
                 }
             }
         }
