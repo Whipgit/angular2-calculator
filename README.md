@@ -2,6 +2,8 @@
 
 An angular2 powered typescript calculator without using eval()
 
+Demo: [http://www.stijnwinand.com/calc](http://www.stijnwinand.com/calc)
+
 1. Install Node 6.2.0
 2. Install NPM 3.x
 3. Open up the command prompt (cmd) as administrator (you never know)
